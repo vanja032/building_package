@@ -1,0 +1,10 @@
+#!/bin/bash
+
+package="blockchain-package"
+status=$(cat /tmp/$package-status)
+
+if [[ $status == "installing" ]]; then
+    echo "Blockchain Package has been installed on your system."
+fi
+
+rm -rf /tmp/$package-status

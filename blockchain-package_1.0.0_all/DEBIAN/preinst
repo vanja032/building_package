@@ -1,0 +1,79 @@
+#!/bin/bash
+
+found_version=0
+package="blockchain-package"
+
+if [[ -f "$HOME/bin/cleos" ]] || [[ -f "/usr/bin/cleos" ]] || [[ -f "/usr/local/bin/cleos" ]]; then
+    version=$(cleos version client)
+    echo "Found another version of the cleos package: $version"
+    found_version=1
+fi
+
+if [[ -f "$HOME/bin/nodeos" ]] || [[ -f "/usr/bin/nodeos" ]] || [[ -f "/usr/local/bin/nodeos" ]]; then
+    version=$(nodeos --version)
+    echo "Found another version of the nodeos package: $version"
+    found_version=1
+fi
+
+if [[ -f "$HOME/bin/keosd" ]] || [[ -f "/usr/bin/keosd" ]] || [[ -f "/usr/local/bin/keosd" ]]; then
+    version=$(keosd --version)
+    echo "Found another version of the keosd package: $version"
+    found_version=1
+fi
+
+if [[ -f "$HOME/bin/eosio-launcher" ]] || [[ -f "/usr/bin/eosio-launcher" ]] || [[ -f "/usr/local/bin/eosio-launcher" ]]; then
+    version=$(eosio-launcher --version)
+    echo "Found another version of the eosio-launcher package: $version"
+    found_version=1
+fi
+
+if [[ -f "$HOME/bin/eosio-blocklog" ]] || [[ -f "/usr/bin/eosio-blocklog" ]] || [[ -f "/usr/local/bin/eosio-blocklog" ]]; then
+    echo "Found another version of the eosio-blocklog package"
+    found_version=1
+fi
+
+if [[ -f "$HOME/bin/trace_api_util" ]] || [[ -f "/usr/bin/trace_api_util" ]] || [[ -f "/usr/local/bin/trace_api_util" ]]; then
+    echo "Found another version of the trace_api_util package"
+    found_version=1
+fi
+
+if [[ $found_version == 1 ]]; then
+    while true; do
+        read -p "This will remove the old packages and install new packages. Do you want to remove the old packages? [Y/N]: " request
+        case $request in
+            [Yy]* ) rm -rf $HOME/bin/cleos
+                rm -rf /usr/bin/cleos
+                rm -rf /usr/local/bin/cleos
+
+                rm -rf $HOME/bin/nodeos
+                rm -rf /usr/bin/nodeos
+                rm -rf /usr/local/bin/nodeos
+
+                rm -rf $HOME/bin/keosd
+                rm -rf /usr/bin/keosd
+                rm -rf /usr/local/bin/keosd
+
+                rm -rf $HOME/bin/eosio-launcher
+                rm -rf /usr/bin/eosio-launcher
+                rm -rf /usr/local/bin/eosio-launcher
+
+                rm -rf $HOME/bin/eosio-blocklog
+                rm -rf /usr/bin/eosio-blocklog
+                rm -rf /usr/local/bin/eosio-blocklog
+
+                rm -rf $HOME/bin/trace_api_util
+                rm -rf /usr/bin/trace_api_util
+                rm -rf /usr/local/bin/trace_api_util
+
+                rm -rf /usr/share/licenses/eosio
+				rm -rf /usr/share/abieos; break;;
+            [Nn]* ) echo "New packages won't be installed on your system."
+                echo "failed" > /tmp/$package-status
+                exit 1; break;;
+            * ) echo "Please type Y(Yes) or N(No).";;
+        esac
+    done
+fi
+
+echo "installing" > /tmp/$package-status
+echo "Blockchain Package is going to be installed on your system."
